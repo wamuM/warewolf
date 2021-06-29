@@ -1,0 +1,79 @@
+
+CLIENT:
+    VERB  [socketToken] [gameID]
+    [
+        JOIN [name] --> ACK
+        CREATE [name] --> CREATED !! the [gameID] header is ignored
+        KICK [name] [reason]
+        LEAVE
+        SEER [name]
+        WOLF_VOTE [name]
+        CUPID [name1] [name2]
+        VOTE [name]
+        WITCH [revive|kill|ignore] (name)
+        CONFIG {config| ""}
+        {
+            wolfNumb: Int
+            maxPlayers: Int
+            cupid: Bool
+            hunter: Bool
+            witch: Bool
+            seer: Bool
+            mayor: Bool
+            (beGameMaster: Bool)--> Experimental
+        }
+        MSG [text]
+    ]
+SERVER:
+    VERB 
+    [   
+        KICKED [reason]
+        ACK
+        TOKEN [token]
+        INFO
+        START
+        LORE [text]
+        CREATED [gameID]
+        BAD_REQUEST [KILL | VOTE | CARD | TURN | OTHER] [info]
+        USERS [name...]
+        CARD [name] [card]
+        NEXT
+        KILL [HUNTER | CUPID | VILLAGE | OTHER] [name]
+        MSG [name] [text]
+        CONFIG {config}
+    ]
+
+ERROR CODES:
+    4000 BAD HEADER
+      (4001) Reserved
+        4002 Couldn't understand TOKEN
+        4003 Couldn't understand GAMEID
+      (4004) Reserved 
+      (4005) Reserved
+        4006 Couldn't understand VERB
+    4100 Bad DATA
+        4101 Data contains unsuported character
+        4102 Not enought data
+        4103 Wrong data
+    4200 Bad TOKEN
+        4201 The TOKEN is not associated to any WebSocket
+    4300 Bad GAMEID
+        4301 Couldn't find game
+        4302 The game has already started
+        4303 The game is at maximum capacity
+        4304 The game doesn't allow you to enter
+    4400 Missfunction prevented
+        4401 Authentication failed
+        4402 Wrong card
+        4403 The name is already being used
+        4404 The TOKEN doesn't match the game
+        4405 The user is already in a game
+
+    4500 Client Side
+        4501 Unexpected VERB
+        4502 Refreshing WebSocket
+    4600
+    4700
+    4800
+    4900
+    ] 5000
